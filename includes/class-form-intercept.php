@@ -131,19 +131,10 @@ class form_intercept{
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-form-intercept-public.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'mailchimp/MailChimp.php';
+
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/form-intercept-public-display.php';
-
-		/**
-		 * The class responsible for rendering admin-style tables
-		 */
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-form-intercept-table.php';
-
-		/**
-		 * The class responsible for rendering admin-style tables
-		 */
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-form-intercept-export-csv.php';
+		
 
 		$this->loader = new form_intercept_Loader();
 
@@ -178,10 +169,7 @@ class form_intercept{
 		$plugin_admin = new form_intercept_Admin( $this->get_form_intercept(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'form_intercept_admin_enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'form_intercept_admin_enqueue_scripts' );
-		$this->loader->add_action( 'wp_login', $plugin_admin, 'form_intercept_admin', 10, 2);
-		$this->loader->add_action( 'wp_ajax_form_intercept_export_button', $plugin_admin, 'form_intercept_export_button');
-		$this->loader->add_action( 'wp_ajax_form_intercept_delete_file', $plugin_admin, 'form_intercept_delete_file');
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'form_intercept_admin_enqueue_scripts' );		
 
 
 	}
@@ -199,8 +187,8 @@ class form_intercept{
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'form_intercept_public_enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'form_intercept_public_enqueue_scripts' );
-		$this->loader->add_action( 'admin_menu', $plugin_public, 'form_intercept_reports');
-		$this->loader->add_action( 'admin_menu', $plugin_public, 'form_intercept_add_admin_menu' );
+		$this->loader->add_action( 'admin_menu', $plugin_public, 'form_intercept_settings');
+		$this->loader->add_action( 'gform_post_submission', $plugin_public, 'post_submission', 10, 2);	
 		$this->loader->add_action( 'admin_init', $plugin_public, 'form_intercept_settings_init' );
 
 	}
